@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Satisfaction Predictor</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Using Chart.js for Dashboards -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-container">
+                <div class="logo-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M19 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21H19C20.1046 21 21 20.1046 21 19V5C21 3.89543 20.1046 3 19 3Z"
+                            stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M12 8V16" stroke="white" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <path d="M8 12H16" stroke="white" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </div>
+                <h1>CarePredict</h1>
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-item active" data-tab="predictor">
+                    <span class="icon">📊</span> Predictor
+                </button>
+                <button class="nav-item" data-tab="data-schema">
+                    <span class="icon">🗃️</span> Data Schema
+                </button>
+                <button class="nav-item" data-tab="mlops">
+                    <span class="icon">⚙️</span> MLOps Dashboard
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <p>v1.0.2 Stable</p>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Predictor Section -->
+            <section id="predictor" class="tab-content active">
+                <header class="top-bar">
+                    <h2>Patient Satisfaction Prediction</h2>
+                    <div class="user-profile">
+                        <span class="badge">Online</span>
+                        <span>Dr. Smith</span>
+                    </div>
+                </header>
+
+                <div class="dashboard-grid">
+                    <!-- Input Form -->
+                    <div class="card form-card">
+                        <div class="card-header">
+                            <h3>Patient Service Factors</h3>
+                            <p>Enter patient details to predict satisfaction score.</p>
+                        </div>
+                        <form id="prediction-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Waiting Time (min)</label>
+                                    <input type="number" id="waitingTime" placeholder="e.g. 15" min="0" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Age</label>
+                                    <input type="number" id="age" placeholder="e.g. 45" min="0" required>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Doctor Communication</label>
+                                    <select id="doctorComm" required>
+                                        <option value="5">Excellent</option>
+                                        <option value="4">Good</option>
+                                        <option value="3">Average</option>
+                                        <option value="2">Poor</option>
+                                        <option value="1">Very Poor</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Nurse Responsiveness</label>
+                                    <select id="nurseResp" required>
+                                        <option value="5">Excellent</option>
+                                        <option value="4">Good</option>
+                                        <option value="3">Average</option>
+                                        <option value="2">Poor</option>
+                                        <option value="1">Very Poor</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Cleanliness</label>
+                                    <select id="cleanliness" required>
+                                        <option value="5">Spotless</option>
+                                        <option value="4">Clean</option>
+                                        <option value="3">Average</option>
+                                        <option value="2">Dirty</option>
+                                        <option value="1">Filthy</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Treatment Effectiveness</label>
+                                    <select id="treatmentEff" required>
+                                        <option value="5">Cured/High</option>
+                                        <option value="4">Improved</option>
+                                        <option value="3">No Change</option>
+                                        <option value="2">Worsened</option>
+                                        <option value="1">Critical</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Billing Experience</label>
+                                    <select id="billingExp" required>
+                                        <option value="5">Seamless</option>
+                                        <option value="4">Good</option>
+                                        <option value="3">Average</option>
+                                        <option value="2">Difficult</option>
+                                        <option value="1">Terrible</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Admission Type</label>
+                                    <select id="admissionType" required>
+                                        <option value="Emergency">Emergency</option>
+                                        <option value="Urgent">Urgent</option>
+                                        <option value="Elective">Elective</option>
+                                        <option value="Trauma">Trauma</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Room Type</label>
+                                <select id="roomType" required>
+                                    <option value="Single">Single Private</option>
+                                    <option value="Shared">Shared</option>
+                                    <option value="ICU">ICU</option>
+                                    <option value="General">General Ward</option>
+                                </select>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" id="reset-btn" class="btn-secondary">Reset</button>
+                                <button type="submit" id="predict-btn" class="btn-primary">Predict Satisfaction</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Result Card -->
+                    <div class="card result-card hidden" id="result-card">
+                        <div class="card-header">
+                            <h3>Prediction Result</h3>
+                        </div>
+                        <div class="result-body">
+                            <div class="satisfaction-level">
+                                <span class="label">Satisfaction Level</span>
+                                <h1 id="prediction-level">High</h1>
+                            </div>
+
+                            <div class="score-grid">
+                                <div class="score-item">
+                                    <span class="label">Probability Score</span>
+                                    <div class="progress-bar">
+                                        <div class="fill" id="prob-bar" style="width: 0%"></div>
+                                    </div>
+                                    <span class="value" id="prob-score">0%</span>
+                                </div>
+                                <div class="score-item">
+                                    <span class="label">Confidence</span>
+                                    <span class="value badge-confidence" id="conf-score">95%</span>
+                                </div>
+                            </div>
+
+                            <div class="key-factors">
+                                <h4>Key Influencing Factors</h4>
+                                <ul id="factors-list">
+                                    <!-- Populated by JS -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Data Schema Section -->
+            <section id="data-schema" class="tab-content">
+                <header class="top-bar">
+                    <h2>Data Schema & Dataset</h2>
+                </header>
+
+                <div class="card full-width">
+                    <div class="card-header">
+                        <h3>Synthetic Hospital Data</h3>
+                        <p>A minimal structured dataset sample used for training.</p>
+                    </div>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Wait Time</th>
+                                    <th>Dr. Comm</th>
+                                    <th>Nurse Resp</th>
+                                    <th>Cleanliness</th>
+                                    <th>Treatment</th>
+                                    <th>Billing</th>
+                                    <th>Age</th>
+                                    <th>Adm Type</th>
+                                    <th>Satisfaction</th>
+                                </tr>
+                            </thead>
+                            <tbody id="schema-table-body">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MLOps Section -->
+            <section id="mlops" class="tab-content">
+                <header class="top-bar">
+                    <h2>MLOps Dashboard</h2>
+                </header>
+
+                <div class="dashboard-grid mx-3">
+                    <!-- Validation Checks -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Data Validation</h3>
+                        </div>
+                        <ul class="validation-list">
+                            <li class="success">
+                                <span class="icon">✅</span> Missing Values Check (Passed)
+                            </li>
+                            <li class="success">
+                                <span class="icon">✅</span> Data Type Validation (Passed)
+                            </li>
+                            <li class="warning">
+                                <span class="icon">⚠️</span> Range Checks (1 Outlier Detected)
+                            </li>
+                            <li class="success">
+                                <span class="icon">✅</span> Schema Consistency (Passed)
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Model Versioning -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Model Status</h3>
+                        </div>
+                        <div class="model-info">
+                            <div class="info-row">
+                                <span class="label">Current Version:</span>
+                                <span class="value" id="model-version">v1.0.0</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Last Retained:</span>
+                                <span class="value" id="last-retrained">2024-10-24 14:30</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="label">Status:</span>
+                                <span class="badge success">Active</span>
+                            </div>
+                        </div>
+                        <button id="retrain-btn" class="btn-primary full-width mt-2">
+                            Trigger Retraining
+                            <span class="loading-spinner hidden"></span>
+                        </button>
+                    </div>
+
+                    <!-- Monitoring Metrics -->
+                    <div class="card full-width">
+                        <div class="card-header">
+                            <h3>Model Performance & Drift</h3>
+                        </div>
+                        <div class="metrics-row">
+                            <div class="metric">
+                                <span class="label">Accuracy</span>
+                                <span class="value" id="metric-accuracy">89.4%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">F1 Score</span>
+                                <span class="value" id="metric-f1">0.87</span>
+                            </div>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="driftChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/model.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
